@@ -1,0 +1,57 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-4">
+        <h4 class="alert alert-danger text-center my-3">Add Student Details </h4>
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {% for st in form %}
+            <div class="form-group">
+                {{st.label_tag}} {{st}} <small class="text-warning">{{st.errors|striptags}}</small>
+            </div>
+            {% endfor %}
+            <input class="btn btn-success" type="submit" value="Add">
+        </form>
+    </div>
+
+    <div class="col-sm-8">
+        <h4 class="alert alert-danger my-3 text-center">Student Information</h4>
+        {% if fm %}
+            <table class="table text-white">
+                <thead>
+                  <tr>
+                    <th class="text-center" scope="col">Id</th>
+                    <th class="text-center" scope="col">Name</th>
+                    <th class="text-center" scope="col">Email</th>
+                    <th class="text-center" scope="col">Phone</th>
+                    <th class="text-center" scope="col">Location</th>
+                    <th class="text-center" scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for stu in fm %}
+                  <tr>
+                    <th scope="row">{{stu.id}}</th>
+                    <td class="text-center">{{stu.name}}</td>
+                    <td class="text-center">{{stu.email}}</td>
+                    <td class="text-center">{{stu.location}}</td>
+                    <td class="text-center">{{stu.mobile}}</td>
+                    <td class="text-center">
+                        <a href="{% url 'update' stu.id %}" class="btn btn-warning">Edit</a>
+                        <form action="{% url 'delete' stu.id %}" method="post" class="d-inline" >{% csrf_token %}
+                        <input  type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+            <h4 class="text-center alert alert-warning">No Records</h4>
+            {% endif %}
+    </div>
+</div>
+
+
+{% endblock content %}
